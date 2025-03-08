@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FootballTest {
-    private static final String TEST_FILE = "src/main/resources/de/exxcellent/challenge/football.csv";   
+    private static final String TEST_FILE = "src/main/resources/de/exxcellent/challenge/test_football.csv";   
     private FootballAnalyzer analyzer = new FootballAnalyzer();
 
     @BeforeEach

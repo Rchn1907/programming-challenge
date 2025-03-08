@@ -20,18 +20,20 @@ public final class App {
 
         String command = args[0];
         String filePath = "src/main/resources/de/exxcellent/challenge/" + args[1];
-        DataAnalyzer analyzer;
+        String result = "";
+
 
         if("--weather".equals(command)) {
-            analyzer = new WeatherAnalyzer();
+            String dataResult = new WeatherAnalyzer().analyze(filePath);
+            result = "Day with smallest temperature spread : " + dataResult;
         }else if("--football".equals(command)) {
-            analyzer = new FootballAnalyzer();
+            String dataResult  = new FootballAnalyzer().analyze(filePath);
+            result = "Team with smallest goal spread : " + dataResult;
         }else {
             System.out.println("Invalid argument. Use --weather OR --football");
             return;
         }
 
-        String result = analyzer.analyze(filePath);
         System.out.println(result);
     }
 }
