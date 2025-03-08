@@ -14,12 +14,24 @@ public final class App {
      */
     public static void main(String... args) {
 
-        // Your preparation code …
+        if(args.length < 2) {
+            System.out.println("Call Program with 2 commands like: --weather weather.csv");
+        }
 
-        String dayWithSmallestTempSpread = "Someday";     // Your day analysis function call …
-        System.out.printf("Day with smallest temperature spread : %s%n", WeatherAnalyzer.findDayWithSmallestTempSpread("src/main/resources/de/exxcellent/challenge/weather.csv"));
+        String command = args[0];
+        String filePath = "src/main/resources/de/exxcellent/challenge/" + args[1];
+        DataAnalyzer analyzer;
 
-        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
-        System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
+        if("--weather".equals(command)) {
+            analyzer = new WeatherAnalyzer();
+        }else if("--football".equals(command)) {
+            analyzer = new FootballAnalyzer();
+        }else {
+            System.out.println("Invalid argument. Use --weather OR --football");
+            return;
+        }
+
+        String result = analyzer.analyze(filePath);
+        System.out.println(result);
     }
 }
