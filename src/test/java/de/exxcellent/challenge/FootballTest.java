@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class FootballTest {
     private static final String TEST_FILE = "src/main/resources/de/exxcellent/challenge/football.csv";   
-    private FootballAnalyzer analzyer = new FootballAnalyzer();
+    private FootballAnalyzer analyzer = new FootballAnalyzer();
 
     @BeforeEach
     void setUp() throws IOException {
@@ -35,8 +35,8 @@ public class FootballTest {
     @Test
     void testEmptyFile() throws IOException {
         Files.write(Path.of(TEST_FILE), "".getBytes());
-        int result = analyzer.analyze(TEST_FILE);
-        assertEquals(-1, result, "Should return -1 for empty file!");
+        String result = analyzer.analyze(TEST_FILE);
+        assertEquals("No Team", result, "Should return 'No Team' for empty file!");
     }
 
     @Test
@@ -44,8 +44,8 @@ public class FootballTest {
         try(FileWriter writer = new FileWriter(TEST_FILE)) {
             writer.write("Wrong,Format\n");
         }
-        int result = analyzer.analyze(TEST_FILE);
-        assertEquals(-1, result, "Should return -1 for incorrect file format!");
+        String result = analyzer.analyze(TEST_FILE);
+        assertEquals("No Team", result, "Should return 'No Team' for incorrect file format!");
     }
 
 }
