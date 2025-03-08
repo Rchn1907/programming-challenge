@@ -1,40 +1,30 @@
 package de.exxcellent.challenge;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.List;
 
-public class WeatherAnalyzer {
+public class WeatherAnalyzer implements DataAnalyzer{
 
-    public static void main(String[] args) {
-        String filePath = "src/main/resources/de/exxcellent/challenge/weather.csv";
-        int dayWithSmallestSpread = findDayWithSmallestTempSpread(filePath);
-        System.out.printf("Day with smallest temperature spread: %d%n", dayWithSmallestSpread);
-    }
-    
-    public static int findDayWithSmallestTempSpread(String filePath) {
+    @Override
+    public String analyze(String filePath) {
+        // Extract data from CSV File with our CSVFileReader Class
+        List<String[]> data = CSVFileReader.readCsv(filePath);
+        
         // initial value which should return if not modified (Wrong format/ Empty file)
         int minSpreadDay = -1;
         double minSpread = Double.MAX_VALUE;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            br.readLine();  // Skip the header part of csv File
+        for (String[] row : data) {
+            int day = Integer.parseInt(row[0]);
+            double maxTemp = Double.parseDouble(row[1]);
+            double minTemp = Double.parseDouble(row[2]);
+            double spread = maxTemp - minTemp;
 
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.trim().split(",");
-                int day = Integer.parseInt(columns[0]);
-                double maxTemp = Double.parseDouble(columns[1]);
-                double minTemp = Double.parseDouble(columns[2]);
-                double spread = maxTemp - minTemp;
-
-                if(spread < minSpread) {
-                    minSpread = spread;
-                    minSpreadDay = day;
-                }
+            if(spread < minSpread) {
+                minSpread = spread;
+                minSpreadDay = day;
             }
-        } catch (Exception e) {
-            System.err.println("Error reading the file: " + e.getMessage());
         }
-        return minSpreadDay;
+
+        return String.valueOf(minSpreadDay);
     }
 }

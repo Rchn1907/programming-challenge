@@ -35,8 +35,8 @@ public class WeatherTest {
     @Test
     void testEmptyFile() throws IOException {
         Files.write(Path.of(TEST_FILE), "".getBytes());
-        int result = analyzer.analyze(TEST_FILE);
-        assertEquals(-1, result, "Should return -1 for empty file!");
+        String result = analyzer.analyze(TEST_FILE);
+        assertEquals("-1", result, "Should return -1 for empty file!");
     }
 
     @Test
@@ -44,7 +44,7 @@ public class WeatherTest {
         try(FileWriter writer = new FileWriter(TEST_FILE)) {
             writer.write("Wrong,Format\n");
         }
-        int result = analyzer.analyze(TEST_FILE);
-        assertEquals(-1, result, "Should return -1 for incorrect file format!");
+        String result = analyzer.analyze(TEST_FILE);
+        assertEquals("-1", result, "Should return -1 for incorrect file format!");
     }
 }
