@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -16,19 +18,42 @@ import java.util.List;
  */
 class AppTest {
 
+    private static final String TEST_FILE = "test_weather.csv";    
     private WeatherAnalyzer weatherAnalyzer;
 
     @BeforeEach
     void setUp() throws IOException {
-        List<String> csvData = Files.readAllLines(Paths.get("src/main/resources/de/exxcellent/challenge/weather.csv"));
+        // Creating mock data for testing the Methods of my Program
+        try(FileWriter writer = new FileWriter(TEST_FILE)) {
+            writer.write("Day,MxT,MnT,AvT,AvDP,1HrP TPcpn,PDir,AvSp,Dir,MxS,SkyC,MxR,Mn,R AvSLP\n");
+            writer.write("1,88,59,74,53.8,0,280,9.6,270,17,1.6,93,23,1004.5\n");
+            writer.write("2,79,63,71,46.5,0,330,8.7,340,23,3.3,70,28,1004.5\n");
+            writer.write("3,77,55,66,39.6,0,350,5,350,9,2.8,59,24,1016.8\n");
+            writer.write("4,77,59,68,51.1,0,110,9.1,130,12,8.6,62,40,1021.1\n");
 
-        weatherAnalyzer = new WeatherAnalyzer(csvData);
+        }
     }
 
     @Test
-    void runWeather() {
-        int result = weatherAnalyzer.findDayWithSmallestTempSpread();
-        assertEquals(10, result, "The day with the smallest temperature should be correct!");
+    void testFindDayWithSmallestTemperatureSpread() {
+        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        assertEquals(4, result, "The day with the smallest temperature should be correct!");
+    }
+
+    @Test
+    void testEmptyFile() throws IOException {
+        Files.write(Path.of(TEST_FILE), "".getBytes());
+        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        assertEquals(-1, result, "Should return -1 for empty file!");
+    }
+
+    @Test
+    void testIncorrectFormat() throws IOException{
+        try(FileWriter writer = new FileWriter(TEST_FILE)) {
+            writer.write("Wrong,Format\n");
+        }
+        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        assertEquals(-1, result, "Should return -1 for incorrect file format!");
     }
 
     @Test
