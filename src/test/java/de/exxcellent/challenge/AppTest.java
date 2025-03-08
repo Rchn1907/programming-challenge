@@ -5,22 +5,29 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 /**
  * Example JUnit 5 test case.
  * @author Benjamin Schmid <benjamin.schmid@exxcellent.de>
  */
 class AppTest {
 
-    private String successLabel = "not successful";
+    private WeatherAnalyzer weatherAnalyzer;
 
     @BeforeEach
     void setUp() {
-        successLabel = "successful";
+        List<String> csvData = Files.readAllLines(Paths.get("src/main/resources/de/exxcellent/challenge/weather.csv"));
+
+        weatherAnalyzer = new WeatherAnalyzer(csvData);
     }
 
     @Test
-    void aPointlessTest() {
-        assertEquals("successful", successLabel, "My expectations were not met");
+    void runWeather() {
+        String result = weatherAnalyzer.findDayWithSmallestTempSpread();
+        assertEquals(10, result, "The day with the smallest temperature should be correct!");
     }
 
     @Test
