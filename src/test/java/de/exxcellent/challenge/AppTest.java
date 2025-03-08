@@ -19,7 +19,6 @@ import java.util.List;
 class AppTest {
 
     private static final String TEST_FILE = "test_weather.csv";    
-    private WeatherAnalyzer weatherAnalyzer;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -30,20 +29,19 @@ class AppTest {
             writer.write("2,79,63,71,46.5,0,330,8.7,340,23,3.3,70,28,1004.5\n");
             writer.write("3,77,55,66,39.6,0,350,5,350,9,2.8,59,24,1016.8\n");
             writer.write("4,77,59,68,51.1,0,110,9.1,130,12,8.6,62,40,1021.1\n");
-
         }
     }
 
     @Test
     void testFindDayWithSmallestTemperatureSpread() {
-        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
-        assertEquals(4, result, "The day with the smallest temperature should be correct!");
+        int result = WeatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        assertEquals(2, result, "The day with the smallest temperature should be correct!");
     }
 
     @Test
     void testEmptyFile() throws IOException {
         Files.write(Path.of(TEST_FILE), "".getBytes());
-        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        int result = WeatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
         assertEquals(-1, result, "Should return -1 for empty file!");
     }
 
@@ -52,7 +50,7 @@ class AppTest {
         try(FileWriter writer = new FileWriter(TEST_FILE)) {
             writer.write("Wrong,Format\n");
         }
-        int result = weatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
+        int result = WeatherAnalyzer.findDayWithSmallestTempSpread(TEST_FILE);
         assertEquals(-1, result, "Should return -1 for incorrect file format!");
     }
 
