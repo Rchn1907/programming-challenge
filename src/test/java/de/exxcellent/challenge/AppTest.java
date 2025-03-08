@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -18,7 +19,7 @@ class AppTest {
     private WeatherAnalyzer weatherAnalyzer;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         List<String> csvData = Files.readAllLines(Paths.get("src/main/resources/de/exxcellent/challenge/weather.csv"));
 
         weatherAnalyzer = new WeatherAnalyzer(csvData);
@@ -26,7 +27,7 @@ class AppTest {
 
     @Test
     void runWeather() {
-        String result = weatherAnalyzer.findDayWithSmallestTempSpread();
+        int result = weatherAnalyzer.findDayWithSmallestTempSpread();
         assertEquals(10, result, "The day with the smallest temperature should be correct!");
     }
 
